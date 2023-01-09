@@ -1,0 +1,41 @@
+serviceAccounts:
+  ## Disable alert manager roles
+  ##
+  server:
+        name: "iamproxy-service-account"
+  alertmanager:
+    create: false
+
+  ## Disable pushgateway
+  ##
+  pushgateway:
+    create: false
+
+server:
+  remoteWrite:
+    - url: https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-c5f310c4-c07a-42a4-bf2a-21c62ce3ecb4/api/v1/remote_write
+      sigv4:
+        region: us-east-1
+      queue_config:
+        max_samples_per_send: 1000
+        max_shards: 200
+        capacity: 2500
+
+  ## Use a statefulset instead of a deployment for resiliency
+  ##
+  statefulSet:
+    enabled: true
+
+  ## Store blocks locally for short time period only
+  ##
+  retention: 1h
+  
+## Disable alert manager
+##
+alertmanager:
+  enabled: false
+
+## Disable pushgateway
+##
+pushgateway:
+  enabled: false
